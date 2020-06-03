@@ -1,0 +1,20 @@
+{
+    "name": "webpress/menu-manager",
+    "description": "Vicoders Menu Manager",
+    "authors": [
+        {
+            "name": "KhiemChay",
+            "email": "nguyendinhkhiem98@gmai.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [],
+        "psr-4": {
+            "VCComponent\\Laravel\\Menu\\": "src/app/"
+        }
+    },
+    "prefer-stable": true,
+    "require": {
+        "webpress/core": "0.0.1"
+    }
+}
