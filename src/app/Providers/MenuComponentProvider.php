@@ -8,14 +8,17 @@ use VCComponent\Laravel\Menu\Repositories\ItemMenuRepository;
 use VCComponent\Laravel\Menu\Repositories\ItemMenuRepositoryEloquent;
 use VCComponent\Laravel\Menu\Repositories\MenuRepository;
 use VCComponent\Laravel\Menu\Repositories\MenuRepositoryEloquent;
+use VCComponent\Laravel\Menu\Services\Menu;
 
-class MenuComponentProvider extends ServiceProvider {
+class MenuComponentProvider extends ServiceProvider
+{
     /**
      * Register any application services.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         App::bind(MenuRepository::class, MenuRepositoryEloquent::class);
         App::bind(ItemMenuRepository::class, ItemMenuRepositoryEloquent::class);
     }
@@ -25,17 +28,17 @@ class MenuComponentProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
+        $this->app->bind("menu_manager", Menu::class);
         $this->loadMigrationsFrom(__DIR__ . '/../../migrations/');
         $this->loadRoutesFrom(__DIR__ . '/../../routes.php');
         $this->publishes([
-            __DIR__ . '/../../migrations/' => database_path('migrations'),
-        ], 'migrations');
-        $this->publishes([
-            __DIR__ . '/../../resources/views' => resource_path('views'),
-        ], 'views');
-        $this->publishes([
+            __DIR__ . '/../../migrations/'         => database_path('migrations'),
             __DIR__ . '/../../resources/sass/menu' => resource_path('sass/menu'),
-        ], 'menu');
+            __DIR__ . '/../../resources/views'     => resource_path('views'),
+            __DIR__ . '/../../config/menu.php'     => config_path('menu.php'),
+        ]);
+
     }
 }

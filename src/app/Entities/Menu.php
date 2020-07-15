@@ -20,8 +20,6 @@ class Menu extends Model implements Transformable
         'name',
     ];
 
-    protected $with = ['menus'];
-
     public function itemMenu()
     {
         return $this->hasMany(ItemMenu::class, 'menu_name');
@@ -30,5 +28,10 @@ class Menu extends Model implements Transformable
     public function menus()
     {
         return $this->hasMany(ItemMenu::class)->where('parent_id', 0);
+    }
+
+    public function menuItems()
+    {
+        return $this->hasMany(ItemMenu::class)->where('parent_id', 0)->with('subMenus');
     }
 }

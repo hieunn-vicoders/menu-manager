@@ -20,6 +20,7 @@ class ItemMenuTransformer extends TransformerAbstract
             'link'       => $model->link,
             'type'       => $model->type,
             'parent_id'  => $model->parent_id,
+            'order_by'   => $model->order_by,
             'timestamps' => [
                 'created_at' => $model->created_at,
                 'updated_at' => $model->updated_at,

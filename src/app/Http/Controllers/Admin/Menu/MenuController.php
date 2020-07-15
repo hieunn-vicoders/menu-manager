@@ -2,6 +2,7 @@
 
 namespace VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -83,7 +84,21 @@ class MenuController extends ApiController
         }
 
         return $this->response->item($menu, new MenuTransformer(['menus']));
+    }
+    public function additems(Request $request, $id)
+    {
+        $menu              = $this->repository->find($id);
+        $datas = $request->all();
 
+        foreach ($datas as $data) {
+            $this->ItemMenuValidator->isValid($data, 'RULE_CREATE');
+            $item              = new ItemMenu($data);
+
+            $menu->menus()->save($item);
+        }
+
+        $menu = $this->repository->find($id);
+        return $this->response->item($menu, new MenuTransformer(['menus']));
     }
 
     public function addItem(Request $request, $id)
@@ -145,7 +160,8 @@ class MenuController extends ApiController
         }
     }
 
-    public function get_menu_ids($menus, &$menu_ids) {
+    public function get_menu_ids($menus, &$menu_ids)
+    {
         if (!empty($menus)) {
             foreach ($menus as $value) {
                 if ($value['id'] != null) {

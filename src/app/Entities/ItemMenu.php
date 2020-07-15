@@ -16,36 +16,39 @@ class ItemMenu extends Model implements Transformable
      *
      * @var array
      */
+
+    protected $table    = 'item_menus';
     protected $fillable = [
         'menu_id',
         'label',
         'link',
         'type',
         'parent_id',
+        'order_by',
     ];
-
-    // protected $with = ['menus'];
 
     public function menu()
     {
-        return $this->belongsTo(Menu::class);
+        return $this->belongsTo(Menu::class)->orderBy('order_by', 'desc');
     }
 
     public function menus()
     {
-        return $this->hasMany(ItemMenu::class, 'parent_id')->with('menus');
+        return $this->hasMany(ItemMenu::class, 'parent_id')->orderBy('order_by', 'desc');
+    }
+
+    public function subMenus()
+    {
+        return $this->hasMany(ItemMenu::class, 'parent_id')->orderBy('order_by', 'desc')->with('subMenus:label,link,id');
     }
 
     public function renderSubmenu()
     {
-        // dd($id);
+
         $item_id      = $this->id;
         $item_menu_id = $this->menu_id;
-
-        $getSub = ItemMenu::where('menu_id', $item_menu_id)
-            ->where('parent_id', $item_id)
-            ->get();
-        $html = '';
+        $getSub       = $this->subMenus;
+        $html         = '';
 
         if ($getSub->isNotEmpty()) {
             $html = '<ul class="sub-menu dropdown-menu  sub-menu-' . $item_id . '    ">';
