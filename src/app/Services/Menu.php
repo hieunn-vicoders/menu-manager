@@ -12,7 +12,7 @@ class Menu
 
     public function __construct()
     {
-        if (isset(config('menu.cache')['enabled']) === true) {
+        if (config('menu.cache')['enabled'] === true) {
             $this->cache     = true;
             $this->timeCache = config('menu.cache')['minutes'] ? config('menu.cache')['minutes'] * 60 : $this->cacheMinutes * 60;
         }
