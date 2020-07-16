@@ -15,7 +15,7 @@ class CreateItemMenusTable extends Migration
     {
         Schema::create('item_menus', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('menu_id');
+            $table->integer('menu_id');
             $table->string('label');
             $table->string('link');
             $table->string('icon')->nullable();
@@ -23,7 +23,6 @@ class CreateItemMenusTable extends Migration
             $table->string('type');
             $table->integer('parent_id')->nullable();
             $table->timestamps();
-            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
         });
     }
 

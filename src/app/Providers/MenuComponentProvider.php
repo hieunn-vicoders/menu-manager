@@ -31,10 +31,9 @@ class MenuComponentProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind("menu_manager", Menu::class);
-        $this->loadMigrationsFrom(__DIR__ . '/../../migrations/');
+        $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
         $this->loadRoutesFrom(__DIR__ . '/../../routes.php');
         $this->publishes([
-            __DIR__ . '/../../migrations/'         => database_path('migrations'),
             __DIR__ . '/../../resources/sass/menu' => resource_path('sass/menu'),
             __DIR__ . '/../../resources/views'     => resource_path('views'),
             __DIR__ . '/../../config/menu.php'     => config_path('menu.php'),
