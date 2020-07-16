@@ -17,7 +17,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VCComponent\\Laravel\\Menu\\Providers\\MenuComponentProvider",
+                "VCComponent\\Laravel\\Menu\\Providers\\MenuComponentProvider"
             ]
         }
     },
