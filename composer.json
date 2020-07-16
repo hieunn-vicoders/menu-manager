@@ -8,12 +8,19 @@
         }
     ],
     "autoload": {
-        "classmap": [],
+        "classmap": ["src/app/"],
         "psr-4": {
             "VCComponent\\Laravel\\Menu\\": "src/app/"
         }
     },
     "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "VCComponent\\Laravel\\Menu\\Providers\\MenuComponentProvider",
+            ]
+        }
+    },
     "require": {
         "webpress/core": "0.0.1"
     }
