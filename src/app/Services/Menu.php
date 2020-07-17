@@ -24,10 +24,14 @@ class Menu
             if (Cache::has('menuManager') && Cache::get('menuManager')->count() !== 0) {
                 return Cache::get('menuManager');
             }
-            return Cache::remember('Menu', $this->timeCache , function () use ($position) {
-                return Entity::select('id')->where('name', $position )->with('menuItems:label,link,id,menu_id')->first();
+            return Cache::remember('Menu', $this->timeCache, function () use ($position) {
+                return Entity::select('id')->where('name', $position)->with(['menuItems' => function ($q) {
+                    $q->select('label', 'link', 'order_by', 'menu_id')->orderBy('order_by', 'ASC');
+                }])->first();
             });
         }
-        return Entity::select('id')->where('name', $position)->with('menuItems:label,link,id,menu_id')->first();
+        return Entity::select('id')->where('name', $position)->with(['menuItems' => function ($q) {
+            $q->select('label', 'link', 'order_by', 'menu_id')->orderBy('order_by', 'ASC');
+        }])->first();
     }
 }

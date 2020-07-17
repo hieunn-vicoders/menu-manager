@@ -11,8 +11,8 @@ use VCComponent\Laravel\Menu\Entities\Menu;
 use VCComponent\Laravel\Menu\Http\Controllers\ApiController;
 use VCComponent\Laravel\Menu\Repositories\MenuRepository;
 use VCComponent\Laravel\Menu\Transformers\MenuTransformer;
-use VCComponent\Laravel\Menu\Validators\MenuValidator;
 use VCComponent\Laravel\Menu\Validators\ItemMenuValidator;
+use VCComponent\Laravel\Menu\Validators\MenuValidator;
 
 class MenuController extends ApiController
 {
@@ -22,9 +22,9 @@ class MenuController extends ApiController
 
     public function __construct(MenuRepository $repository, MenuValidator $validator, ItemMenuValidator $ItemMenuValidator)
     {
-        $this->repository         = $repository;
-        $this->validator          = $validator;
-        $this->ItemMenuValidator  = $ItemMenuValidator;
+        $this->repository        = $repository;
+        $this->validator         = $validator;
+        $this->ItemMenuValidator = $ItemMenuValidator;
     }
 
     public function index(Request $request)
@@ -85,14 +85,15 @@ class MenuController extends ApiController
 
         return $this->response->item($menu, new MenuTransformer(['menus']));
     }
+
     public function additems(Request $request, $id)
     {
-        $menu              = $this->repository->find($id);
+        $menu  = $this->repository->find($id);
         $datas = $request->all();
 
         foreach ($datas as $data) {
             $this->ItemMenuValidator->isValid($data, 'RULE_CREATE');
-            $item              = new ItemMenu($data);
+            $item = new ItemMenu($data);
 
             $menu->menus()->save($item);
         }
@@ -105,9 +106,9 @@ class MenuController extends ApiController
     {
         $this->ItemMenuValidator->isValid($request, 'RULE_CREATE');
 
-        $data              = $request->all();
-        $item              = new ItemMenu($data);
-        $menu              = $this->repository->find($id);
+        $data = $request->all();
+        $item = new ItemMenu($data);
+        $menu = $this->repository->find($id);
         $menu->menus()->save($item);
         $menu = $this->repository->find($id);
         return $this->response->item($menu, new MenuTransformer(['menus']));
@@ -115,10 +116,11 @@ class MenuController extends ApiController
 
     public function UpdateSubmenu($items, $parent)
     {
-        foreach ($items['menus'] as $item) {
+        foreach ($items['menus'] as $key => $item) {
             $menu_item            = ItemMenu::find($item['id']);
             $menu_item->label     = $item['label'];
             $menu_item->link      = $item['link'];
+            $menu_item->order_by  = $key;
             $menu_item->parent_id = $parent;
             $menu_item->save();
             if (!empty($item['menus'])) {
@@ -130,21 +132,22 @@ class MenuController extends ApiController
     public function UpdateMenuItem(Request $request)
     {
         if ($request->has('menus')) {
-            $menu_id = $request->get('menus')['id'];
+            $menu_id                = $request->get('menus')['id'];
             $item_menus_current_ids = ItemMenu::where('menu_id', $menu_id)->get()->pluck('id');
-            $menu_ids = [];
-            $menu_ids = $this->get_menu_ids($request->get('menus')['menus'], $menu_ids);
-            $menu_ids = collect($menu_ids);
-            $diff_ids = $item_menus_current_ids->diff($menu_ids);
+            $menu_ids               = [];
+            $menu_ids               = $this->get_menu_ids($request->get('menus')['menus'], $menu_ids);
+            $menu_ids               = collect($menu_ids);
+            $diff_ids               = $item_menus_current_ids->diff($menu_ids);
 
             if ($diff_ids->isNotEmpty()) {
                 ItemMenu::destroy($diff_ids);
             }
 
-            foreach ($request->get('menus')['menus'] as $item) {
+            foreach ($request->get('menus')['menus'] as $key => $item) {
                 $menu_item            = ItemMenu::find($item['id']);
                 $menu_item->label     = $item['label'];
                 $menu_item->link      = $item['link'];
+                $menu_item->order_by  = $key;
                 $menu_item->parent_id = 0;
                 $menu_item->save();
 
