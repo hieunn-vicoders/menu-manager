@@ -25,13 +25,9 @@ class Menu
                 return Cache::get('menuManager');
             }
             return Cache::remember('Menu', $this->timeCache, function () use ($position) {
-                return Entity::select('id')->where('name', $position)->with(['menuItems' => function ($q) {
-                    $q->select('label', 'link', 'order_by', 'menu_id')->orderBy('order_by', 'ASC');
-                }])->first();
+                return Entity::select('id')->where('name', $position)->with('menuItems')->first();
             });
         }
-        return Entity::select('id')->where('name', $position)->with(['menuItems' => function ($q) {
-            $q->select('label', 'link', 'order_by', 'menu_id')->orderBy('order_by', 'ASC');
-        }])->first();
+        return Entity::select('id')->where('name', $position)->with('menuItems')->first();
     }
 }

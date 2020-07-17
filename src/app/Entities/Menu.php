@@ -32,6 +32,6 @@ class Menu extends Model implements Transformable
 
     public function menuItems()
     {
-        return $this->hasMany(ItemMenu::class)->where('parent_id', 0)->with('subMenus');
+        return $this->hasMany(ItemMenu::class)->where('parent_id', 0)->with('subMenus')->orderBy('order_by', 'ASC');
     }
 }
