@@ -25,6 +25,18 @@ class MenuController extends ApiController
         $this->repository        = $repository;
         $this->validator         = $validator;
         $this->ItemMenuValidator = $ItemMenuValidator;
+
+        if (!empty(config('menu.auth_middleware.admin'))) {
+            $user = $this->getAuthenticatedUser();
+            if (!$this->entity->ableToUse($user)) {
+                throw new \Exception('Permission denied !');
+            }
+
+            foreach(config('menu.auth_middleware.admin') as $middleware){
+                $this->middleware($middleware['middleware'], ['except' => $middleware['except']]);
+            }
+        }
+
     }
 
     public function index(Request $request)

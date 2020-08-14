@@ -34,4 +34,9 @@ class Menu extends Model implements Transformable
     {
         return $this->hasMany(ItemMenu::class)->where('parent_id', 0)->with('subMenus')->orderBy('order_by', 'ASC');
     }
+
+    public function ableToUse($user)
+    {
+        return true;
+    }
 }
