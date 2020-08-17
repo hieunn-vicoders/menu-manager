@@ -28,10 +28,6 @@ class MenuController extends ApiController
 
         if (!empty(config('menu.auth_middleware.admin'))) {
             $user = $this->getAuthenticatedUser();
-            if (!$this->entity->ableToUse($user)) {
-                throw new \Exception('Permission denied !');
-            }
-
             foreach(config('menu.auth_middleware.admin') as $middleware){
                 $this->middleware($middleware['middleware'], ['except' => $middleware['except']]);
             }
