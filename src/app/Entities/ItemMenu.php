@@ -29,17 +29,17 @@ class ItemMenu extends Model implements Transformable
 
     public function menu()
     {
-        return $this->belongsTo(Menu::class)->orderBy('order_by', 'desc');
+        return $this->belongsTo(Menu::class)->orderBy('order_by', 'ASC');
     }
 
     public function menus()
     {
-        return $this->hasMany(ItemMenu::class, 'parent_id')->orderBy('order_by', 'desc');
+        return $this->hasMany(ItemMenu::class, 'parent_id')->orderBy('order_by', 'ASC');
     }
 
     public function subMenus()
     {
-        return $this->hasMany(ItemMenu::class, 'parent_id')->orderBy('order_by', 'desc')->with('subMenus:label,link,id');
+        return $this->hasMany(ItemMenu::class, 'parent_id')->orderBy('order_by', 'ASC')->with('subMenus:label,link,id');
     }
 
     public function renderSubmenu()
