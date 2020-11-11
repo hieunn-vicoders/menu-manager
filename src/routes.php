@@ -19,6 +19,7 @@ $api->version('v1', function ($api) {
         $api->get('menus', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@index');
         $api->post('menus', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@store');
         $api->get('menus/{id}', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@show');
+        $api->delete('menus/{id}', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@delete');
         $api->post('menus/{id}/items', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@addItems');
         $api->post('menus/{id}/item', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@addItem');
         $api->put('menus/{id}', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@update');
