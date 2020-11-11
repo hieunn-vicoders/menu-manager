@@ -47,7 +47,7 @@ class MenuController extends ApiController
         if ($request->has('search')) {
             $search = $request->get('search');
             $query  = $query->where(function ($q) use ($request, $search) {
-                $q->where('title', 'like', "%{$search}%");
+                $q->where('name', 'like', "%{$search}%");
             });
         }
 
