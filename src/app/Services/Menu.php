@@ -20,11 +20,12 @@ class Menu
 
     public function getMenu($position)
     {
+        $cacheName = "menu " . $position;
         if ($this->cache === true) {
             if (Cache::has('menuManager') && Cache::get('menuManager')->count() !== 0) {
                 return Cache::get('menuManager');
             }
-            return Cache::remember('Menu', $this->timeCache, function () use ($position) {
+            return Cache::remember($cacheName, $this->timeCache, function () use ($position) {
                 return Entity::select('id')->where('name', $position)->with('menuItems')->first();
             });
         }
