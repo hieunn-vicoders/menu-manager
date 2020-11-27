@@ -22,8 +22,11 @@ class Menu
     {
         if ($this->cache === true) {
             $cacheName = "menu " . $position;
-            if (Cache::has($cacheName) && Cache::get($cacheName)->count() !== 0) {
-                return Cache::get($cacheName);
+            if (Cache::has($cacheName)) {
+                $cache = Cache::get($cacheName);
+                if ($cache) {
+                    return $cache;
+                }
             }
             return Cache::remember($cacheName, $this->timeCache, function () use ($position) {
                 return Entity::select('id')->where('name', $position)->with('menuItems')->first();
