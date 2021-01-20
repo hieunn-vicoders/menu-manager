@@ -21,6 +21,7 @@ class Menu extends Model implements Transformable
         'name',
         'page',
         'position',
+        'status',
     ];
 
     public function itemMenu()

@@ -74,6 +74,9 @@ class MenuController extends ApiController
         if ($request->has('name')) {
             $menu       = new Menu;
             $menu->name = $request->get('name');
+            $menu->page = $request->get('page');
+            $menu->position = $request->get('position');
+            $menu->status = $request->get('status');
             $menu->save();
             return $this->response->item($menu, new MenuTransformer);
         } else {
