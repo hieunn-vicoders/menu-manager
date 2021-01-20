@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -18,6 +19,8 @@ $api->version('v1', function ($api) {
 
         $api->get('menus', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@index');
         $api->post('menus', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@store');
+        $api->get('menus/get-page-list', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@getPageList');
+        $api->get('menus/get-position-list/{slug}', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@getPositionList');
         $api->get('menus/{id}', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@show');
         $api->delete('menus/{id}', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@delete');
         $api->post('menus/{id}/items', 'VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu\MenuController@addItems');

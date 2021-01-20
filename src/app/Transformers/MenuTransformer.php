@@ -17,6 +17,8 @@ class MenuTransformer extends TransformerAbstract
         return [
             'id'         => (int) $model->id,
             'name'       => $model->name,
+            'page'       => $model->page,
+            'position'       => $model->position,
             'timestamps' => [
                 'created_at' => $model->created_at,
                 'updated_at' => $model->updated_at,

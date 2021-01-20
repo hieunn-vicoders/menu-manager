@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use VCComponent\Laravel\Menu\Entities\ItemMenu;
+use VCComponent\Laravel\Menu\Traits\RenderMenusMethods;
 
 class Menu extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, RenderMenusMethods; 
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +19,8 @@ class Menu extends Model implements Transformable
      */
     protected $fillable = [
         'name',
+        'page',
+        'position',
     ];
 
     public function itemMenu()
