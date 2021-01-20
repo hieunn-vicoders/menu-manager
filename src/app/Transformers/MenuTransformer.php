@@ -17,6 +17,7 @@ class MenuTransformer extends TransformerAbstract
         return [
             'id'         => (int) $model->id,
             'name'       => $model->name,
+            'status'     => $model->status,
             'page'       => $model->page,
             'position'   => $model->position,
             'page_vn'     => $this->translatePage($model->page),
