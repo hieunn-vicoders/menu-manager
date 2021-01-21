@@ -24,6 +24,9 @@ class Menu extends Model implements Transformable
         'status',
     ];
 
+    const MENU_VERTICAL  = 'vertical';
+    const MENU_HORIZONTAL = 'horizontal';
+
     public function itemMenu()
     {
         return $this->hasMany(ItemMenu::class, 'menu_name');

@@ -1,4 +1,4 @@
-@if($menuType == 'horizontal')
+@if($menu_type === $menu_horizontal)
 <div class="horizontal-menu">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container-fluid">
@@ -32,7 +32,7 @@
         </div>
     </nav>
 </div>
-@elseif($menuType == 'vertical')
+@else
     <div class="vertical-menu">
         <ul class="vertical-menu-ul-parent">
             @if ($main_menu)
