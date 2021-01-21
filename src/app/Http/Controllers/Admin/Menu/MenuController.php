@@ -28,11 +28,10 @@ class MenuController extends ApiController
 
         if (!empty(config('menu.auth_middleware.admin'))) {
             $user = $this->getAuthenticatedUser();
-            foreach(config('menu.auth_middleware.admin') as $middleware){
+            foreach (config('menu.auth_middleware.admin') as $middleware) {
                 $this->middleware($middleware['middleware'], ['except' => $middleware['except']]);
             }
         }
-
     }
 
     public function index(Request $request)
@@ -75,6 +74,9 @@ class MenuController extends ApiController
         if ($request->has('name')) {
             $menu       = new Menu;
             $menu->name = $request->get('name');
+            $menu->page = $request->get('page');
+            $menu->position = $request->get('position');
+            $menu->status = $request->get('status');
             $menu->save();
             return $this->response->item($menu, new MenuTransformer);
         } else {
@@ -199,5 +201,22 @@ class MenuController extends ApiController
     {
         $this->repository->delete($id);
         return $this->success();
+    }
+
+    public function getPageList()
+    {
+        $page_list = [];
+
+        foreach (config('menu.page') as $key => $value) {
+            $page_list[$key] = $value['label'];
+        }
+
+        return $page_list;
+    }
+
+    public function getPositionList($slug)
+    {
+        $list_position = config('menu.page.' . $slug . '.position');
+        return $list_position;
     }
 }
