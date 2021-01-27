@@ -33,7 +33,7 @@ class MenuComponentProvider extends ServiceProvider
         $this->app->bind("menu_manager", Menu::class);
         $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
         $this->loadRoutesFrom(__DIR__ . '/../../routes.php');
-        $this->loadViewsFrom(__DIR__ . "/../../resources/views", 'render_menu');
+        $this->loadViewsFrom(resource_path() . '/views', 'render_menu');
         $this->publishes([
             __DIR__ . '/../../resources/sass/menu' => resource_path('sass/menu'),
             __DIR__ . '/../../resources/views'     => resource_path('views'),
