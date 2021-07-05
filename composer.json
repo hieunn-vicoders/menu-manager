@@ -1,16 +1,19 @@
 {
     "name": "webpress/menu-manager",
     "description": "Vicoders Menu Manager",
-    "authors": [
-        {
-            "name": "KhiemChay",
-            "email": "nguyendinhkhiem98@gmai.com"
-        }
-    ],
+    "authors": [{
+        "name": "KhiemChay",
+        "email": "nguyendinhkhiem98@gmai.com"
+    }],
     "autoload": {
         "classmap": ["src/app/"],
         "psr-4": {
             "VCComponent\\Laravel\\Menu\\": "src/app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "VCComponent\\Laravel\\Menu\\Test\\": "tests/"
         }
     },
     "prefer-stable": true,
@@ -23,5 +26,13 @@
     },
     "require": {
         "webpress/core": "^0.1"
+    },
+    "require-dev": {
+        "orchestra/testbench": "5.0.0"
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpunit --color=always"
+        ]
     }
 }
