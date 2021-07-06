@@ -22,6 +22,6 @@
         }
     },
     "require": {
-        "webpress/core": "^1.4"
+        "webpress/core": "^2.1"
     }
 }
