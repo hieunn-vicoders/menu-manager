@@ -2,7 +2,8 @@
 
 namespace VCComponent\Laravel\Menu\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+// use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
