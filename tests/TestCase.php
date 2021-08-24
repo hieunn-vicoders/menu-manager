@@ -2,11 +2,13 @@
 
 namespace VCComponent\Laravel\Menu\Test;
 
-
+use Dingo\Api\Provider\LaravelServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use VCComponent\Laravel\Menu\Providers\MenuComponentProvider;
-use Dingo\Api\Provider\LaravelServiceProvider;
-
+use VCComponent\Laravel\User\Entities\User;
+use VCComponent\Laravel\User\Providers\UserComponentEventProvider;
+use VCComponent\Laravel\User\Providers\UserComponentProvider;
+use VCComponent\Laravel\User\Providers\UserComponentRouteProvider;
 
 class TestCase extends OrchestraTestCase
 {
@@ -22,6 +24,11 @@ class TestCase extends OrchestraTestCase
         return [
             LaravelServiceProvider::class,
             MenuComponentProvider::class,
+            \Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+            \Illuminate\Auth\AuthServiceProvider::class,
+            UserComponentEventProvider::class,
+            UserComponentProvider::class,
+            UserComponentRouteProvider::class,
         ];
     }
 
@@ -46,10 +53,14 @@ class TestCase extends OrchestraTestCase
         $app['config']->set('app.key', 'base64:TEQ1o2POo+3dUuWXamjwGSBx/fsso+viCCg9iFaXNUA=');
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
+        $app['config']->set('jwt.secret', '5jMwJkcDTUKlzcxEpdBRIbNIeJt1q5kmKWxa0QA2vlUEG6DRlxcgD7uErg51kbBl');
+        $app['config']->set('auth.providers.users.model', \VCComponent\Laravel\User\Entities\User::class);
+        $app['config']->set('user', ['namespace' => 'user-management']);
+
         $app['config']->set('menu.namespace', 'menu-management');
         $app['config']->set('menu.models', [
             'menu' => \VCComponent\Laravel\Menu\Entities\Menu::class,
@@ -58,67 +69,70 @@ class TestCase extends OrchestraTestCase
         $app['config']->set('menu.transformers', [
             'menu' => \VCComponent\Laravel\Menu\Transformers\MenuTransformer::class,
         ]);
-        $app['config']->set('menu.auth_middleware', [
-            'admin'    => [
-                'middleware' => ''
-            ],
-            'frontend' => [
-                'middleware' => ''
-            ],
-        ]);
-
         $app['config']->set('menu', [
             'page' => [
-                'header'    => [
-                    'label'    => 'header',
+                'header' => [
+                    'label' => 'header',
                     'position' => [
                         'position-1' => 'Vi tri 1',
                         'position-2' => 'Vi tri 2',
                     ],
                 ],
                 'footer' => [
-                    'label'    => 'footer',
+                    'label' => 'footer',
                     'position' => [
                         'position-1' => 'Vị trí 1',
                         'position-2' => 'Vị trí 2',
                     ],
                 ],
             ],
+            'auth_middleware' => [
+                'admin' => [
+                    [
+                        'middleware' => '',
+                        'except' => [],
+                    ],
+                ],
+
+                'frontend' => [
+                    'middleware' => '',
+                ],
+            ],
 
         ]);
         $app['config']->set('api', [
-            'standardsTree'      => 'x',
-            'subtype'            => '',
-            'version'            => 'v1',
-            'prefix'             => 'api',
-            'domain'             => null,
-            'name'               => null,
+            'standardsTree' => 'x',
+            'subtype' => '',
+            'version' => 'v1',
+            'prefix' => 'api',
+            'domain' => null,
+            'name' => null,
             'conditionalRequest' => true,
-            'strict'             => false,
-            'debug'              => true,
-            'errorFormat'        => [
-                'message'     => ':message',
-                'errors'      => ':errors',
-                'code'        => ':code',
+            'strict' => false,
+            'debug' => true,
+            'errorFormat' => [
+                'message' => ':message',
+                'errors' => ':errors',
+                'code' => ':code',
                 'status_code' => ':status_code',
-                'debug'       => ':debug',
+                'debug' => ':debug',
             ],
-            'middleware'         => [
+            'middleware' => [
             ],
-            'auth'               => [
+            'auth' => [
             ],
-            'throttling'         => [
+            'throttling' => [
             ],
-            'transformer'        => \Dingo\Api\Transformer\Adapter\Fractal::class,
-            'defaultFormat'      => 'json',
-            'formats'            => [
+            'transformer' => \Dingo\Api\Transformer\Adapter\Fractal::class,
+            'defaultFormat' => 'json',
+            'formats' => [
                 'json' => \Dingo\Api\Http\Response\Format\Json::class,
             ],
-            'formatsOptions'     => [
+            'formatsOptions' => [
                 'json' => [
                     'pretty_print' => false,
                     'indent_style' => 'space',
-                    'indent_size'  => 2,
+                    'indent_size' => 2,
                 ],
             ],
         ]);
@@ -128,7 +142,18 @@ class TestCase extends OrchestraTestCase
         $response->assertStatus($error_code);
         $response->assertJson([
             'message' => 'The given data was invalid.',
-            'message' => '{"'.$field .'":["'.$error_message.'"]}',
+            'message' => '{"' . $field . '":["' . $error_message . '"]}',
         ]);
+    }
+    protected function loginToken()
+    {
+        $dataLogin = ['username' => 'admin', 'password' => '123456789', 'email' => 'admin@test.com'];
+        $user = factory(User::class)->make($dataLogin);
+        $user->save();
+        $login = $this->json('POST', 'api/user-management/login', $dataLogin);
+        $token = $login->Json()['token'];
+        $this->withoutMiddleware();
+        return $token;
+
     }
 }
