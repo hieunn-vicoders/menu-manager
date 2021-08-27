@@ -60,6 +60,7 @@ class TestCase extends OrchestraTestCase
         $app['config']->set('jwt.secret', '5jMwJkcDTUKlzcxEpdBRIbNIeJt1q5kmKWxa0QA2vlUEG6DRlxcgD7uErg51kbBl');
         $app['config']->set('auth.providers.users.model', \VCComponent\Laravel\User\Entities\User::class);
         $app['config']->set('user', ['namespace' => 'user-management']);
+        $app['config']->set('repository.cache.enabled', false);
 
         $app['config']->set('menu.namespace', 'menu-management');
         $app['config']->set('menu.models', [
