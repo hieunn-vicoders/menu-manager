@@ -32,6 +32,9 @@ class MenuController extends ApiController
                 $this->middleware($middleware['middleware'], ['except' => $middleware['except']]);
             }
         }
+        else{
+            throw new Exception("Admin middleware configuration is required");
+        }
     }
 
     public function index(Request $request)
