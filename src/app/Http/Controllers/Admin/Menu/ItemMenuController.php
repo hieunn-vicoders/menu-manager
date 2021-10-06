@@ -2,6 +2,7 @@
 
 namespace VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu;
 
+use Exception;
 use Illuminate\Http\Request;
 use VCComponent\Laravel\Menu\Repositories\ItemMenuRepository;
 use VCComponent\Laravel\Menu\Transformers\ItemMenuTransformer;

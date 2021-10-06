@@ -3,6 +3,7 @@
 namespace VCComponent\Laravel\Menu\Http\Controllers\Admin\Menu;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
