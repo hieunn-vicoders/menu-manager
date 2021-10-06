@@ -19,6 +19,15 @@ class ItemMenuController extends ApiController
         $this->entity      = $repository->getEntity();
         $this->validator   = $validator;
         $this->transformer = ItemMenuTransformer::class;
+        if (!empty(config('menu.auth_middleware.admin'))) {
+            $user = $this->getAuthenticatedUser();
+            foreach (config('menu.auth_middleware.admin') as $middleware) {
+                $this->middleware($middleware['middleware'], ['except' => $middleware['except']]);
+            }
+        }
+        else{
+            throw new Exception("Admin middleware configuration is required");
+        }
     }
 
     public function index(Request $request)
